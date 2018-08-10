@@ -1,0 +1,166 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <title>PC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.theme.min.css" rel="stylesheet">
+
+</head>
+<body class="tooltip-hidden">
+<div id="container"></div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script>
+    var p = null;
+    $(document).ready(function () {
+        p = new Plan.Alliance(window.innerWidth, window.innerHeight, {transparent: true, autoResize: true});
+        p.init({
+                selectorId: "container",
+                width: 1200,
+                height: 800,
+                scaleExtent: [.2, 2],
+                translateExtent: [[-1100, -614.5], [1134.5, 614.5]],
+                scaleExtentPlan: [.1, 8],
+                translateExtentPlan: [[-1764, -1464], [1764, 1464]],
+                showButtonPlans: true,
+                fullSizeShow: true,
+                fullScreenButton: false,
+                showSearchButton: false,
+                backgroundMultiple: false,
+                keyCoords: "coords",
+                sprites: [
+                    {
+                        "name": "plan",
+                        "url": "./assets/pictures/tunisbaygolf/02.jpg",
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "name": "background",
+                        "url": "./assets/pictures/tunisbaygolf/01.jpg",
+                        "x": 0,
+                        "y": 0
+                    },
+                ],
+                initialData: {
+                    "k": .5,
+                    "x": window.innerWidth / 2,
+                    "y": window.innerHeight / 2
+                },
+                initialDataPlan: {
+                    "k": 1,
+                    "x": window.innerWidth / 2,
+                    "y": window.innerHeight / 2
+                },
+                defaultColor: 0x2C6BA4,
+                defaultOpacity: .9,
+                properties: [{
+                    "color": "0x0000ff",
+                    "opacity": "0.9",
+                    "lineSize": ".5",
+                    "coords": [[-795.1959425733768, 499.4451959041233, true], [-710.3158148487945, 466.8572897241497, true], [-706.5265234325185, 469.88872285717054, true], [-698.9479405999665, 466.8572897241497, true], [-690.6114994841594, 475.1937308399569, true], [-698.9479405999665, 481.25659710599854, true], [-674.6964755358001, 497.9294793376129, true], [-661.8128847204617, 497.17162105435773, true], [-649.6871521883786, 504.7502038869097, true], [-654.992160171165, 508.5394953031857, true], [-645.1400024888474, 535.8223935003729, true], [-726.9886970804089, 567.6524413970913, true], [-729.2622719301745, 575.9888825128984, true], [-729.2622719301745, 579.0203156459193, true], [-766.3973278096793, 553.2531340152424, true], [-793.6802260068664, 532.0331020840969, true], [-794.4380842901217, 500.2030541873785, false], [-733.0515633464505, 537.3381100668832, true], [-655.7500184544201, 510.8130701529513, true], [-793.6802260068664, 501.7187707538889, false], [-734.5672799129609, 535.8223935003729, true], [-793.6802260068664, 499.4451959041233, true], [-730.7779884966849, 575.9888825128984, false], [-733.0515633464505, 536.580251783628, true], [-730.0201302134296, 575.2310242296433, true]],
+                    "info": {
+                        "id": "888",
+                        "title": "Kablam",
+                    }
+                }],
+                phases: [{
+                    "title": "Phase 4",
+                    "coords": [[-8.35029114883956, -423.5197126196899, true], [-8.35029114883956, -450.0447525336219, true], [532.7605230953722, -614.5, true], [1029.1576986275272, -613.7421417167448, true], [1031.4312734772927, -612.9842834334896, true], [1031.4312734772927, -478.08550901406426, true], [423.6289303066236, -206.77224360870315, true], [-7.592432865584361, -424.2775709029452, false], [-7.592432865584361, -450.0447525336219, true], [423.6289303066236, -234.05514180589032, true], [423.6289303066236, -234.05514180589032, false], [422.87107202336836, -234.8130000891455, true], [1031.4312734772927, -512.9469900438033, true], [1030.6734151940377, -513.7048483270586, false], [422.87107202336836, -236.3287166556559, true], [424.3867885898788, -209.80367674172396, true]],
+                    "color": "#D36566",
+                }],
+                onMouseOverPropertie: function (item) {
+                    $("canvas[title]").tooltip("option", "content", item.info.title);
+                    $('body').removeClass('tooltip-hidden');
+                },
+                onMouseOverPhase: function (item) {
+
+                },
+                onMouseOverBackground: function () {
+                    $('body').addClass('tooltip-hidden');
+                },
+                search: function(objs){
+                    console.dir(objs);
+                }
+            },
+            function () {
+                $("canvas").addClass('row');
+                $("canvas").attr('id', 'canvas-container');
+                $("canvas").css('margin', '0');
+                $("canvas").attr('title', ' ');
+                $("canvas[title]").tooltip({
+                    track: true,
+                    context: function () {
+                        return ' ';
+                    },
+                });
+            }
+        );
+    })
+
+</script>
+<div class="modal fade" id="property-detail-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content black-back">
+            <div class="modal-header" style="padding:0.5rem .5rem 0 2rem">
+                <button type="button" style="line-height: 17px" class="close white-color" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <input type="hidden" name="property_id" value="">
+                <input type="hidden" name="property_ref" value="">
+                <div class="container-fluid my-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <p style="color:  #fff;font-weight:  bold;" class="d-none reference-property"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 pr-0">
+                            <img class="img-fluid d-none img-property" src="">
+                        </div>
+                        <div class="col-6 pl-0">
+                            <p style="color:#fff;margin-bottom: .5rem;line-height: 13px" class="voaction d-none">
+                                Vocation: <b style="color:#949b46"></b></p>
+                            <p style="color:#fff;margin-bottom: .5rem" class="surface-lot d-none">Surface du lot: <b
+                                    style="color:#949b46">0 m²</b></p>
+                            <p style="color:#fff;margin-bottom: .5rem" class="surface-total d-none">Surface totale: <b
+                                    style="color:#949b46">0 m²</b></p>
+                            <p style="color:#fff;" class="nbr-etage d-none">Nombre d'étages: <b
+                                    style="color:#949b46">0</b></p>
+                            <p style="color:#fff;margin-bottom: .5rem" class="niveau d-none">Niveau: <b
+                                    style="color:#949b46">0</b></p>
+                            <p style="color:#fff;margin-bottom: .5rem" class="cuffar d-none">Cuf: <b
+                                    style="color:#949b46">0</b></p>
+                            <p style="color:#fff;margin-bottom: .5rem" class="cos d-none">Cos: <b style="color:#949b46">0</b>
+                            </p>
+                            <p style="color:#fff;margin-bottom: .5rem" class="emprise d-none">Emprise: <b
+                                    style="color:#949b46">0 m²</b></p>
+                            <div class="description d-none"></div>
+                            <p class="download-pdf m-0"><a href="#" target="_blank" class="no-decoration d-none"
+                                                           style="color: #d1a9a4;">Cliquer pour télécharger le PDF</a>
+                            </p>
+                            <input type="button" class="btn-second mt-2" name="contact" value="Me contacter"
+                                   data-toggle="modal" data-target="#contact-form">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
