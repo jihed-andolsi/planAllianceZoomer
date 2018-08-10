@@ -249,8 +249,14 @@ class Alliance extends PIXI.Application {
 
     }
 
-    public search() {
-        (this.options as any).search(this.Graphics);
+    public search(search) {
+        this._modeSearh = search;
+        (this.options as any).search(this.Graphics, search);
+        if(search){
+            this.removeColorFromBackground();
+        } else {
+            this.addColorToBackground();
+        }
     }
 
     private addGraphics() {
@@ -686,7 +692,7 @@ class Alliance extends PIXI.Application {
 
     };
 
-    private removeColorFromBackground() {
+    public removeColorFromBackground() {
         const $this = this;
         if (($this.options as any).backgroundMultiple) {
             $this.MultipleBackground.map((element) => {
@@ -698,7 +704,7 @@ class Alliance extends PIXI.Application {
         }
     }
 
-    private addColorToBackground() {
+    public addColorToBackground() {
         console.log("addColorToBackground")
         const $this = this;
         if (($this.options as any).backgroundMultiple) {
