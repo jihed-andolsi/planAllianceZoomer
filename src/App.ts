@@ -258,10 +258,20 @@ class Alliance extends PIXI.Application {
             this.addColorToBackground();
         }
     }
-
-    private addGraphics() {
+    public addGraphicInfo(prp){
+        (this.options as any).properties.push(prp)
+    }
+    public removeGraphicInfoBykey(key){
+        if((this.options as any).properties[key] != undefined){
+            delete((this.options as any).properties[key])
+            this.addItems();
+        }
+    }
+    public addGraphics() {
         const $this = this;
         const Graphics = [];
+        $this.removeGraphics();
+
         ($this.options as any).properties.forEach((G, k) => {
             const keyCords = "keyCoords" in ($this.options as any) ? ($this.options as any).keyCoords : "coords";
             const coords = G[keyCords];
@@ -320,7 +330,7 @@ class Alliance extends PIXI.Application {
                     const x_diff = x <= 10;
                     const y_diff = y <= 10;
                     if (k && x_diff && y_diff) {
-                        $this.showModalProperty(G, $this);
+                        ($this.options as any).onClickPropertie(G);
                     }
                     /*} else {
                         $this.showModalProperty(G, $this);
@@ -332,10 +342,20 @@ class Alliance extends PIXI.Application {
         });
         $this.Graphics = Graphics;
     }
+    public removeGraphics() {
+        const $this = this;
+        $this.Graphics.map((e) => {
+            let {G, Graph} = e;
+            $this.Container.removeChild(Graph);
+        });
 
-    private addPhases(){
+        $this.Graphics = [];
+    }
+
+    public addPhases(){
         const $this = this;
         const Phases = [];
+        $this.removePhases();
         ($this.options as any).phases.forEach((G, k) => {
             const keyCords = "keyCoords" in ($this.options as any) ? ($this.options as any).keyCoords : "coords";
             const coords = G[keyCords];
@@ -383,6 +403,26 @@ class Alliance extends PIXI.Application {
             }
         });
         $this.Phases = Phases;
+    }
+
+    public removePhases() {
+        const $this = this;
+        $this.Phases.map((e) => {
+            let {G, Graph} = e;
+            $this.Container.removeChild(Graph);
+        });
+
+        $this.Phases = [];
+    }
+
+    public addItems(){
+        this.addGraphics();
+        this.addPhases();
+    }
+
+    public removeItems(){
+        this.removePhases();
+        this.removeGraphics();
     }
 
     private showModalProperty(G, $this) {
@@ -582,12 +622,11 @@ class Alliance extends PIXI.Application {
             $this.startDrawing = !$this.startDrawing;
             if (!$this.startDrawing) {
                 (b as any).text.text = "Start drawing";
-                $this._counterGraphic++;
                 if ($this.newGraphic.length) {
-                    console.log(JSON.stringify($this.newGraphic));
-                    $('#property #coords').html(JSON.stringify($this.newGraphic));
-                    $("#property").modal({show: true});
+                    ($this.options as any).onFinishDrawing($this.newGraphic);
                 }
+                $this.Container.removeChild($this.newGraphicObj[$this._counterGraphic]);
+                $this._counterGraphic++;
                 $this.newGraphic = [];
 
             } else {

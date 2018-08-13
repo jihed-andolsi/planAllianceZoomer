@@ -82,14 +82,32 @@
                     $("canvas[title]").tooltip("option", "content", item.info.title);
                     $('body').removeClass('tooltip-hidden');
                 },
+                onClickPropertie: function (item) {
+                    console.dir(item);
+                },
                 onMouseOverPhase: function (item) {
 
                 },
                 onMouseOverBackground: function () {
                     $('body').addClass('tooltip-hidden');
                 },
-                search: function(objs){
+                search: function (objs) {
                     console.dir(objs);
+                },
+                onFinishDrawing: function(coords){
+                    console.log(JSON.stringify(coords));
+                    $('#property #coords').html(JSON.stringify(coords));
+                    $("#property").modal({show: true});
+                    p.addGraphicInfo({
+                        "color": "0x0000ff",
+                        "opacity": "0.9",
+                        "lineSize": ".5",
+                        "coords": coords,
+                        "info": {
+                            "id": "888",
+                            "title": "Kablam",
+                        }
+                    })
                 }
             },
             function () {
@@ -108,6 +126,9 @@
     })
 
 </script>
+<button onclick="p.removeItems();">remove</button>
+<button onclick="p.addItems();">refresh</button>
+<button onclick="p.removeGraphicInfoBykey(0)">delete by key 0</button>
 <div class="modal fade" id="property-detail-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content black-back">
