@@ -460,9 +460,10 @@ class Alliance extends PIXI.Application {
         let initY = window.innerHeight / 2;
         let scalInit = .5;
         if (($this.options as any).hasOwnProperty("initialData")) {
-            initX = ($this.options as any).initialData.x;
-            initY = ($this.options as any).initialData.y;
-            scalInit = ($this.options as any).initialData.k;
+            let initialData = ($this.options as any).initialData(this.isMobile);
+            initX = (initialData as any).x;
+            initY = (initialData as any).y;
+            scalInit = (initialData as any).k;
 
         }
         $this.canvas.call($this.zoomHandler).call($this.zoomHandler.transform, d3.zoomIdentity.translate(initX, initY).scale(scalInit));
