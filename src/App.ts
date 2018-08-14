@@ -249,9 +249,9 @@ class Alliance extends PIXI.Application {
 
     }
 
-    public search(search) {
+    public search(search, searchOptions) {
         this._modeSearh = search;
-        (this.options as any).search(this.Graphics, search);
+        (this.options as any).search(this.Graphics, search, searchOptions);
         if(search){
             this.removeColorFromBackground();
         } else {
