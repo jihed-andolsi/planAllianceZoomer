@@ -57,9 +57,16 @@ class Alliance extends PIXI.Application {
     private MultipleBackground = [];
     private isZooming: boolean = false;
     private options: object = [];
+    private PropertiesAlpha = .5;
+    private PropertiesMakeAlphaBigger: boolean = true;
+    private TickerPropertis = null;
+    private CountTickerPropertis: number = 0;
+    private _ticker: PIXI.ticker.Ticker;
 
     constructor(width, height, options) {
         super(isMobile() ? window.innerWidth : width, isMobile() ? window.innerHeight : height, options);
+        this._ticker = PIXI.ticker.shared;
+        this._ticker.autoStart = true;
     }
 
     public init(options, callback) {
@@ -121,6 +128,8 @@ class Alliance extends PIXI.Application {
             $this.addButtons();
             $this.addPowredBy();
             $this.resizeCanvas();
+            $this.addTicker();
+            $this._ticker.add($this.addTicker, this);
 
         });
     }
@@ -252,21 +261,24 @@ class Alliance extends PIXI.Application {
     public search(search, searchOptions) {
         this._modeSearh = search;
         (this.options as any).search(this.Graphics, search, searchOptions);
-        if(search){
+        if (search) {
             this.removeColorFromBackground();
         } else {
             this.addColorToBackground();
         }
     }
-    public addGraphicInfo(prp){
+
+    public addGraphicInfo(prp) {
         (this.options as any).properties.push(prp)
     }
-    public removeGraphicInfoBykey(key){
-        if((this.options as any).properties[key] != undefined){
+
+    public removeGraphicInfoBykey(key) {
+        if ((this.options as any).properties[key] != undefined) {
             delete((this.options as any).properties[key])
             this.addItems();
         }
     }
+
     public addGraphics() {
         const $this = this;
         const Graphics = [];
@@ -277,6 +289,11 @@ class Alliance extends PIXI.Application {
             const coords = G[keyCords];
             const Graph = $this.createGraph(coords, G);
             if (Graph) {
+                let defaultOpacity = 0;
+                /*if(isMobile()){
+                    defaultOpacity = .5;
+                }*/
+                G.opacity = G.hasOwnProperty("opacity") ? G.opacity : defaultOpacity;
                 (Graph as any).interactive = true;
                 (Graph as any).alpha = G.opacity;
                 (Graph as any).buttonMode = true;
@@ -285,28 +302,6 @@ class Alliance extends PIXI.Application {
                         (this as any).alpha = 1;
                     }
                     ($this.options as any).onMouseOverPropertie(G);
-                    /*let description = "";
-                    (G.info.reference) ? description += "<div class=\"row\"><div class=\"col-12\"><p style=\"color:  #fff;font-weight:  bold;\">" + G.info.reference + "</p></div></div>" : "";
-                    (!G.info.reference && G.info.title) ? description += "<div class=\"row\"><div class=\"col-12\"><p style=\"color:  #fff;font-weight:  bold;\">" + G.info.title + "</p></div></div>" : "";
-                    description += "<div class=\"row\">";
-                    let picture = (($this.options as any).hasOwnProperty("pictureNotFoundUrl")) ? ($this.options as any).pictureNotFoundUrl : "";
-                    picture = (G.info.image && G.info.image.hasOwnProperty('small')) ? G.info.image.small : picture;
-                    (picture) ? description += "<div class=\"col-6 pr-0\"><img class=\"img-fluid\" src='" + picture + "'></div>" : "";
-                    description += "<div class=\"col-6\">";
-
-                    (G.info.landUse) ? description += "<p style=\"color:#949b46\"><b style=\"color:#fff;\">" + ($this.options as any).plan_lang.vocation + ": </b> " + G.info.landUse.name + "</p>" : "";
-                    (G.info.surface_terrain_show) ? description += "<p style=\"color:#949b46\"><b style=\"color:#fff;\">" + ($this.options as any).plan_lang.surface_du_lot + ": </b> " + G.info.surface_terrain_show + " <span>m²<span></p>" : "";
-                    (G.info.surface_habitable_show) ? description += "<p style=\"color:#949b46\"><b style=\"color:#fff;\">" + ($this.options as any).plan_lang.surface_totale + ": </b> " + G.info.surface_habitable_show + " <span>m²<span></p>" : "";
-                    if (G.info.pdfDownloadLink) {
-                        let [firstPdf] = G.info.pdfDownloadLink;
-                        (firstPdf) ? description += "<p style='color: #d1a9a4'>" + ($this.options as any).plan_lang.pdf + "</p>" : "";
-                    }
-                    description += "</div>";
-                    description += "</div>";
-                    if (description && !$this.startDrawing) {
-                        $("canvas[title]").tooltip("option", "content", description);
-                        $('body').removeClass('tooltip-hidden');
-                    }*/
                 };
 
                 (Graph as any).mouseout = function () {
@@ -321,7 +316,6 @@ class Alliance extends PIXI.Application {
                     Graph.dataTranslate = $this.zoomTrans;
                 };
                 Graph.click = Graph.tap = function () {
-                    //if($this.isMobile) {
                     const k = Graph.dataTranslate.k == $this.zoomTrans.k;
                     let x = Graph.dataTranslate.x - $this.zoomTrans.x;
                     let y = Graph.dataTranslate.y - $this.zoomTrans.y;
@@ -330,11 +324,8 @@ class Alliance extends PIXI.Application {
                     const x_diff = x <= 10;
                     const y_diff = y <= 10;
                     if (k && x_diff && y_diff) {
-                        ($this.options as any).onClickPropertie(G);
+                        ($this.options as any).onClickPropertie(G, isMobile());
                     }
-                    /*} else {
-                        $this.showModalProperty(G, $this);
-                    }*/
                 };
                 ($this as any).Container.addChild(Graph);
                 Graphics.push({G, Graph});
@@ -342,6 +333,7 @@ class Alliance extends PIXI.Application {
         });
         $this.Graphics = Graphics;
     }
+
     public removeGraphics() {
         const $this = this;
         $this.Graphics.map((e) => {
@@ -352,7 +344,7 @@ class Alliance extends PIXI.Application {
         $this.Graphics = [];
     }
 
-    public addPhases(){
+    public addPhases() {
         const $this = this;
         const Phases = [];
         $this.removePhases();
@@ -405,6 +397,37 @@ class Alliance extends PIXI.Application {
         $this.Phases = Phases;
     }
 
+    private addTicker() {
+        let $this = this;
+        let alpha = 0;
+        if ($this.CountTickerPropertis >= 2) {
+            $this._ticker.stop();
+        } else {
+            let alphaTick = .01;
+            if ($this.PropertiesAlpha + alphaTick > 1) {
+                $this.PropertiesMakeAlphaBigger = false;
+            }
+            if ($this.PropertiesAlpha - alphaTick < .2) {
+                $this.PropertiesMakeAlphaBigger = true;
+                $this.CountTickerPropertis += 1;
+            }
+            if ($this.PropertiesMakeAlphaBigger) {
+                $this.PropertiesAlpha += alphaTick;
+            } else {
+                $this.PropertiesAlpha -= alphaTick;
+            }
+            alpha = $this.PropertiesAlpha;
+        }
+        $this.Graphics.map((e) => {
+            let {G, Graph} = e;
+            Graph.alpha = alpha;
+        });
+        $this.Phases.map((e) => {
+            let {G, Graph} = e;
+            Graph.alpha = alpha;
+        });
+    }
+
     public removePhases() {
         const $this = this;
         $this.Phases.map((e) => {
@@ -415,12 +438,12 @@ class Alliance extends PIXI.Application {
         $this.Phases = [];
     }
 
-    public addItems(){
+    public addItems() {
         this.addGraphics();
         this.addPhases();
     }
 
-    public removeItems(){
+    public removeItems() {
         this.removePhases();
         this.removeGraphics();
     }
