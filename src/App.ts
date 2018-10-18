@@ -128,9 +128,14 @@ class Alliance extends PIXI.Application {
             $this.addButtons();
             $this.addPowredBy();
             $this.resizeCanvas();
-            $this.addTicker();
-            $this._ticker.add($this.addTicker, this);
-
+            let clignote = true;
+            if("clignote" in $this.options){
+                clignote = ($this.options as any).clignote;
+            }
+            if(clignote){
+                $this.addTicker();
+                $this._ticker.add($this.addTicker, this);
+            }
         });
     }
 
@@ -332,6 +337,9 @@ class Alliance extends PIXI.Application {
             }
         });
         $this.Graphics = Graphics;
+        if("graphicsAdded" in $this.options){
+            ($this.options as any).graphicsAdded();
+        }
     }
 
     public removeGraphics() {
